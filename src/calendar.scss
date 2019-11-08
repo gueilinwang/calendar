@@ -1,0 +1,291 @@
+*,
+:after,
+:before {
+  box-sizing: border-box;
+}
+%triangle {
+  display: inline-block;
+  height: 50px;
+  width: 20px;
+  position: relative;
+}
+
+@mixin tranX() {
+  @for $i from 1 through 30 {
+    $name: $i * (-100);
+    &.move_#{$name} {
+      transform: translateX($name * 1%);
+    }
+  }
+}
+
+body {
+  font-family: Verdana, Arial, \\5fae\8edf\6b63\9ed1\9ad4, Microsoft JhengHei,
+    \\5fae\8edf\96c5\9ed1\9ad4, Microsoft YaHei;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #444;
+  background-color: #fff;
+}
+#root {
+  display: flex;
+  justify-content: center;
+}
+a {
+  text-decoration: none;
+}
+.calendarContainer {
+  position: relative;
+  max-width: 1200px;
+  .calendar {
+    margin-top: 80px;
+    width: 50%;
+    margin-left: 20px;
+
+    display: inline-block;
+    .calBar {
+      display: grid;
+      grid-template-columns: 20px 1fr 20px;
+      border-bottom: 1px solid #f4f4f4;
+      cursor: pointer;
+
+      a {
+        height: 50px;
+        background-color: #ede9dd;
+        position: relative;
+        &.prev:before {
+          content: "";
+          position: absolute;
+          display: inline-block;
+          border-width: 7px 7px 7px 0;
+          border-color: transparent #e10500 transparent transparent;
+          border-style: solid;
+          top: 35%;
+          left: 3px;
+        }
+        &.next:before {
+          content: "";
+          position: absolute;
+          display: inline-block;
+          border-width: 7px 0 7px 7px;
+          border-color: transparent transparent transparent #e10500;
+          border-style: solid;
+          top: 35%;
+          right: 3px;
+        }
+      }
+      .showYM {
+        display: flex;
+        background-color: #ede9dd;
+        flex-wrap: nowrap;
+        overflow: hidden;
+
+        .month {
+          min-width: 33.333%;
+          height: 50px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          @include tranX();
+          span {
+            color: #666;
+            font-size: 16px;
+            word-spacing: 10px;
+          }
+          &.now {
+            background-color: #fff;
+            span {
+              color: #e10500;
+            }
+          }
+        }
+      }
+    }
+
+    .calendar_main {
+      &.calendarMode {
+        .week {
+          display: grid;
+          grid-template-columns: repeat(7, 1fr);
+          text-align: center;
+          line-height: 30px;
+          color: #666;
+          font-weight: 600;
+          border-left: 1px solid #f4f4f4;
+          border-right: 1px solid #f4f4f4;
+        }
+        .calendar_content {
+          border-top: 1px solid #f4f4f4;
+          .dates {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            border-bottom: 1px solid #f4f4f4;
+            .date {
+              position: relative;
+              width: 85.7px;
+              height: 85px;
+              font-size: 12px;
+              line-height: 16px;
+              border-right: 1px solid #f4f4f4;
+              cursor: pointer;
+              &.active {
+                background-color: #fff9e3;
+                border: 2px solid #66bb3c;
+              }
+              &.otherMonth {
+                background-color: #f8f8f8;
+                cursor: default;
+                .num {
+                  display: none;
+                }
+              }
+              &.thisMonth:hover {
+                background-color: #fff9e3;
+              }
+              .num {
+                position: absolute;
+                color: #444;
+                top: 2px;
+                left: 2px;
+              }
+              .date_week.none {
+                display: none;
+              }
+              .guaranteed {
+                position: absolute;
+                top: 0;
+                right: 0;
+                width: 40px;
+                height: 20px;
+                color: #fff;
+                text-align: center;
+                line-height: 20px;
+                background-color: #fe8400;
+              }
+              .status {
+                position: absolute;
+                bottom: 48px;
+                left: 2px;
+                &.green {
+                  color: #24a07c;
+                }
+                &.org {
+                  color: #ff7800;
+                }
+              }
+              .sell {
+                position: absolute;
+                bottom: 32px;
+                left: 2px;
+                color: #666;
+              }
+              .group {
+                position: absolute;
+                bottom: 16px;
+                left: 2px;
+                color: #666;
+              }
+              .price {
+                position: absolute;
+                bottom: 0;
+                left: 2px;
+                color: #e10500;
+              }
+            }
+          }
+        }
+      }
+      &.listMode {
+        .week {
+          display: none;
+        }
+        .calendar_content {
+          .dates {
+            .date.none {
+              display: none;
+            }
+            .date {
+              display: grid;
+              grid-template-columns: repeat(9, 1fr);
+              grid-template-rows: 1fr 1fr;
+              border-bottom: 1px solid #f4f4f4;
+              border-left: 1px solid #f4f4f4;
+              border-right: 1px solid #f4f4f4;
+              color: #666;
+              width: 100%;
+              height: 73px;
+              &.active,
+              &:hover {
+                background-color: #fff9e3;
+                border: 1px solid #66bb3c;
+              }
+
+              .num {
+                grid-area: 1/1/2/2;
+                font-size: 24px;
+
+                display: grid;
+                justify-items: center;
+              }
+              .date_week {
+                grid-area: 2/1/3/2;
+
+                font-size: 16px;
+                display: grid;
+                justify-items: center;
+              }
+              .sell {
+                grid-area: 1/2/2/3;
+                width: 80px;
+              }
+              .group {
+                grid-area: 1/3/2/4;
+                width: 80px;
+              }
+              .guaranteed {
+                grid-area: 2/2/3/3;
+                color: #fff;
+                background-color: #ff9600;
+                text-align: center;
+                width: 40px;
+                height: 18px;
+                padding: 0 5px;
+                line-height: 1.4;
+                border-radius: 3px;
+              }
+              .status {
+                grid-area: 1/-1/2/-2;
+                text-align: right;
+                font-size: 16px;
+                &.green {
+                  color: #24a07c;
+                }
+                &.org {
+                  color: #ff7800;
+                }
+              }
+              .price {
+                grid-area: 2/-1/3/-2;
+                color: #e10500;
+                font-size: 16px;
+              }
+              .weekend {
+                color: #e10500;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  .changeMode {
+    display: inline-block;
+    position: absolute;
+    top: 0;
+    left: 55%;
+    margin-top: 80px;
+    color: #0077b3;
+    font-size: 16px;
+    cursor: pointer;
+  }
+}
